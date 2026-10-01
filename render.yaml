@@ -1,17 +1,19 @@
-# Paid single-instance Python deployment. Review costs in Render before creating.
+# Free single-instance Python deployment; AI provider usage is billed separately.
 # Select the branch containing this file when creating the Blueprint.
 services:
   - type: web
     name: tradingagents-engine
-    runtime: docker
-    plan: 1c-2g
+    runtime: python
+    plan: free
     region: virginia
     numInstances: 1
-    dockerfilePath: ./Dockerfile.mcp
-    dockerContext: .
+    buildCommand: pip install ".[mcp]"
+    startCommand: python -m tradingagents.cloud_server
     autoDeployTrigger: "off"
-    # Default TCP health check; /mcp correctly rejects unauthenticated requests.
+    healthCheckPath: /health
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
       - key: TRADINGAGENTS_MCP_HOST
         value: 0.0.0.0
       - key: TRADINGAGENTS_LLM_PROVIDER
