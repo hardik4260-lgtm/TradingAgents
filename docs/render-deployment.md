@@ -1,17 +1,17 @@
 # Cloud deployment on Render
 
-`render.yaml` prepares a Docker web service for the Python MCP engine. It does
+`render.yaml` prepares a free native Python web service for the MCP engine. It does
 not create a Render account, provision a server, provide API credentials, or
-configure an OAuth authorization server. The 1 CPU / 2 GB plan is a starting
-configuration, not a measured sizing guarantee; review its current paid price in
-Render before creating it. LLM API usage and any OAuth hosting costs are separate.
+configure an OAuth authorization server. Hosting uses Render's free plan, with
+limited memory and idle spin-down. Do not upgrade to a paid plan without explicit
+user authorization. LLM API usage and any OAuth hosting costs are separate.
 
 ## Deploy the prepared branch
 
 1. Connect your Render account and grant repository access. Create a Blueprint
    from `hardik4260-lgtm/TradingAgents`, selecting `codex/chatgpt-mcp-engine`
    while PR #1 is unmerged, or `main` after merging it. Use `render.yaml`.
-2. Review the single-service plan and cost. Configure the requested values in
+2. Confirm the single-service plan is free. Configure the requested values in
    Render's secure environment settings. Never put API keys in Git or chat.
 3. Set the two model IDs to models actually available in your provider account.
    The supplied Blueprint selects OpenAI; another provider requires changing
@@ -23,7 +23,8 @@ Render before creating it. LLM API usage and any OAuth hosting costs are separat
 5. Set `TRADINGAGENTS_MCP_RESOURCE_URL` to the **actual assigned** HTTPS service
    URL plus `/mcp`. Bind the OAuth access-token audience to the same exact URL.
    If the URL is only assigned after service creation, set/update this value
-   before the first successful deploy. The engine refuses to start without it.
+   before enabling analysis. With missing OAuth settings, the cloud entry point
+   serves a setup page and `/health`, while every `/mcp` request returns 503.
 6. Trigger a manual deploy and inspect build/startup logs. The container runs a
    single process, respects Render's `PORT`, and listens on `0.0.0.0`. Render
    terminates HTTPS. Automatic redeploys are disabled to avoid disrupting jobs.
@@ -33,8 +34,8 @@ Render before creating it. LLM API usage and any OAuth hosting costs are separat
    complete OAuth login. Call `engine_status`, then test a user-input option
    calculation before starting a provider-billed stock analysis.
 
-No unauthenticated analysis route is provided. The default TCP health check
-does not call the paid engine and does not bypass MCP authentication. A passing
+No unauthenticated analysis route is provided. The `/health` liveness check
+does not call the engine and does not bypass MCP authentication. A passing
 health check proves the process is listening, not that OAuth or provider access
 works. Those require the connection and engine checks above.
 
