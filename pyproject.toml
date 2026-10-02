@@ -28,6 +28,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+mcp = [
+    "mcp>=1.30,<2",
+    "PyJWT[crypto]>=2.10,<3",
+]
 dev = [
     "ruff>=0.16",
     "pytest>=8.0",
@@ -41,6 +45,7 @@ bedrock = [
 
 [project.scripts]
 tradingagents = "cli.main:app"
+tradingagents-mcp = "tradingagents.mcp_server:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "tradingagents.__version__"}

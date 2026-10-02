@@ -403,3 +403,8 @@ Please reference our work if you find *TradingAgents* provides you with some hel
       url={https://arxiv.org/abs/2412.20138}, 
 }
 ```
+# ChatGPT / MCP integration
+
+For an MCP interface to this engine, see [ChatGPT/MCP setup](docs/chatgpt-mcp.md).
+It supports background stock analysis and long-option target calculations;
+remote use requires a Python host, provider credentials and OAuth configuration.
