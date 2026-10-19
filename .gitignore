@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!robinhood-options/bot/lib/
 lib64/
 parts/
 sdist/

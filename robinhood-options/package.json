@@ -1,0 +1,19 @@
+{
+  "name": "robinhood-options",
+  "private": true,
+  "type": "module",
+  "description": "Options desk for Robinhood accounts. Orders wait for human approval.",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "check:policy": "node --experimental-strip-types bot/lib/option-order.selfcheck.ts",
+    "dev": "bdk dev"
+  },
+  "dependencies": {
+    "@cursor/bdk": "^0.2.27",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "6.0.3"
+  }
+}
